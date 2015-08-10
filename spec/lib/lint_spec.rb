@@ -80,4 +80,20 @@ describe Jshint::Lint do
       end
     end
   end
+
+  describe '#file_paths' do
+    let(:file_name_pattern) { '**/*.js' }
+    let(:additional_file_pattern) { 'spec/javascripts/**/*.js' }
+    let(:search_paths) { ['path/to/javascripts'] }
+    let(:files) { [file_name_pattern, additional_file_pattern] }
+
+    before do
+      allow(configuration).to receive(:files).and_return(files)
+      allow(configuration).to receive(:search_paths).and_return(search_paths)
+    end
+
+    it 'returns search paths' do
+      expect(subject.send(:file_paths)).to match_array(['path/to/javascripts/**/*.js', 'spec/javascripts/**/*.js'])
+    end
+  end
 end
